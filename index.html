@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" data-lens="build">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reem Basho · Builder and Researcher</title>
+    <meta name="description" content="Reem Basho, Computer Science senior at Rafic Hariri University. Software developer and team lead, and a curious AI researcher. Pick a lens." />
+    <meta name="theme-color" content="#e9ecea" />
+    <meta property="og:title" content="Reem Basho · Builder and Researcher" />
+    <meta property="og:description" content="I question things, then I build something to find out." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script>
+      try {
+        var q = new URLSearchParams(location.search).get('lens') || localStorage.getItem('rb-lens');
+        if (q === 'research' || q === 'build') document.documentElement.dataset.lens = q;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
