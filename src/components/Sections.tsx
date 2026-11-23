@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
-import { m as motion } from 'motion/react';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { m as motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { Code2, Download, FlaskConical, Mail, Copy } from 'lucide-react';
 import { Github, Linkedin } from './BrandIcons';
 import { about, learning, now, profile, questions, recognition, skills, type Lens } from '../data/content';
 import { credits } from '../data/credits';
 import { ArrowMark, CircleMark, UnderlineMark } from './Marks';
 import { asset, img } from '../lib';
+import { replayIntro } from './Intro';
 
 /* ---------------- Header ---------------- */
 export function Header({ lens, onLens }: { lens: Lens; onLens: (l: Lens) => void }) {
@@ -61,14 +62,21 @@ export function Header({ lens, onLens }: { lens: Lens; onLens: (l: Lens) => void
 export function Hero({
   lens,
   chosen,
+  live,
   onLens,
   strip,
 }: {
   lens: Lens;
   chosen: boolean;
+  /** the opening has finished; the name may react to the pointer */
+  live: boolean;
   onLens: (l: Lens) => void;
   strip: React.ReactNode;
 }) {
+  const reduce = useReducedMotion();
+  const { scrollY } = useScroll();
+  const lift = useTransform(scrollY, [0, 900], [0, -140]);
+  const fade = useTransform(scrollY, [0, 700], [1, 0.25]);
   const opts: { id: Lens; name: string; who: string; Icon: typeof Code2 }[] = [
     { id: 'build', name: 'Build', who: 'I’m hiring a developer or a team lead', Icon: Code2 },
     { id: 'research', name: 'Research', who: 'I’m looking for a curious researcher', Icon: FlaskConical },
@@ -76,17 +84,30 @@ export function Hero({
   return (
     <section id="top" className="hero">
       <div className="wrap hero-top">
-        <div>
-          <h1 className="hero-name">
-            <span>Reem</span>
-            <span>Basho</span>
-          </h1>
-          <p className="hero-headline">{profile.headline}</p>
+        <motion.div style={reduce ? undefined : { y: lift, opacity: fade }}>
+          <HeroName live={live && !reduce} />
+          <p className="hero-headline">
+            <span className="sr-only">{profile.headline}</span>
+            <span aria-hidden="true">
+              {profile.headline.split(' ').map((w, wi) => (
+                <Fragment key={wi}>
+                  {wi > 0 && ' '}
+                  <span className="w">
+                    {[...w].map((c, ci) => (
+                      <span key={ci} className="ch">
+                        {c}
+                      </span>
+                    ))}
+                  </span>
+                </Fragment>
+              ))}
+            </span>
+          </p>
           <p className="hero-role">
             {profile.role[lens]} · CS senior at Rafic Hariri University
           </p>
           <p className="hero-pitch">{profile.pitch[lens]}</p>
-        </div>
+        </motion.div>
         <div className="chooser">
           <p className="chooser-label hand">
             Who’s looking?
@@ -117,16 +138,63 @@ export function Hero({
   );
 }
 
+/* The name, letter by letter. Where the pointer passes, light burns through:
+   letters thin and narrow, then settle back. */
+function HeroName({ live }: { live: boolean }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (!live || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    const h = ref.current!;
+    const letters = [...h.querySelectorAll<HTMLElement>('.ch')];
+    let raf = 0;
+    let px = -9999;
+    let py = -9999;
+    const paint = () => {
+      raf = 0;
+      for (const l of letters) {
+        const r = l.getBoundingClientRect();
+        const d = Math.hypot(px - (r.left + r.width / 2), py - (r.top + r.height / 2));
+        const p = Math.max(0, 1 - d / 220);
+        l.style.setProperty('--p', (p * p * (3 - 2 * p)).toFixed(3));
+      }
+    };
+    const onMove = (e: PointerEvent) => {
+      px = e.clientX;
+      py = e.clientY;
+      if (!raf) raf = requestAnimationFrame(paint);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      cancelAnimationFrame(raf);
+      letters.forEach((l) => l.style.removeProperty('--p'));
+    };
+  }, [live]);
+  return (
+    <h1 ref={ref} className="hero-name" aria-label="Reem Basho">
+      {['Reem', 'Basho'].map((w) => (
+        <span key={w} className="word" aria-hidden="true">
+          {[...w].map((c, i) => (
+            <span key={i} className="ch">
+              {c}
+            </span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  );
+}
+
 /* ---------------- About ---------------- */
 export function About({ lens }: { lens: Lens }) {
   return (
     <section id="about" className="section" aria-labelledby="about-title">
       <div className="wrap about">
         <div className="about-side">
-          <h2 id="about-title" className="section-title">
+          <h2 id="about-title" className="section-title" data-reveal="develop">
             Hi, I’m Reem.
           </h2>
-          <figure className="print" style={{ margin: 0 }}>
+          <figure className="print" style={{ margin: 0 }} data-reveal="drop">
             <div className="print-img">
               <img
                 className="photo"
@@ -144,8 +212,10 @@ export function About({ lens }: { lens: Lens }) {
             <p key={p}>{p}</p>
           ))}
           <ul className="facts">
-            {profile.facts.map((f) => (
-              <li key={f}>{f}</li>
+            {profile.facts.map((f, i) => (
+              <li key={f} data-reveal="rise" style={{ '--i': i } as React.CSSProperties}>
+                {f}
+              </li>
             ))}
           </ul>
         </div>
@@ -159,12 +229,12 @@ export function Now({ lens }: { lens: Lens }) {
   return (
     <section id="now" className="section" aria-labelledby="now-title">
       <div className="wrap">
-        <h2 id="now-title" className="section-title">
+        <h2 id="now-title" className="section-title" data-reveal="develop">
           What I’m doing now
         </h2>
         <div className="now">
           <div className="now-side">
-            <figure className="print" style={{ margin: 0 }}>
+            <figure className="print" style={{ margin: 0 }} data-reveal="drop">
               <div className="print-img">
                 <img
                   className="photo"
@@ -190,8 +260,8 @@ export function Now({ lens }: { lens: Lens }) {
             <p className="now-line">{now.line[lens]}</p>
             <p className="now-context">{now.context}</p>
             <ol className="steps">
-              {now.steps.map((s) => (
-                <li key={s.title}>
+              {now.steps.map((s, i) => (
+                <li key={s.title} data-reveal="rise" style={{ '--i': i } as React.CSSProperties}>
                   <div>
                     <h3>{s.title}</h3>
                     <p>{s.body}</p>
@@ -217,13 +287,18 @@ export function Questions({
   onAsk: (target: string) => void;
 }) {
   const [hover, setHover] = useState<number | null>(null);
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const drift = useTransform(scrollYProgress, [0, 1], ['-9%', '9%']);
+  const zoom = useTransform(scrollYProgress, [0, 1], [1.18, 1.04]);
   return (
-    <section id="questions" className="questions" aria-labelledby="q-title">
-      <div className="questions-bg" aria-hidden="true">
+    <section ref={ref} id="questions" className="questions" aria-labelledby="q-title">
+      <motion.div className="questions-bg" aria-hidden="true" style={reduce ? undefined : { y: drift, scale: zoom }}>
         <img src={img('stars')} alt="" loading="lazy" decoding="async" />
-      </div>
+      </motion.div>
       <div className="wrap">
-        <h2 id="q-title" className="section-title">
+        <h2 id="q-title" className="section-title" data-reveal="develop">
           Questions I keep asking
         </h2>
         <p className="questions-intro">
@@ -239,7 +314,7 @@ export function Questions({
                   ? 'open the frame'
                   : `opens in the ${where} lens`;
             return (
-              <li key={q.q}>
+              <li key={q.q} data-reveal="write" style={{ '--i': i } as React.CSSProperties}>
                 <button
                   className="q-btn"
                   onClick={() => onAsk(q.target)}
@@ -266,7 +341,7 @@ export function Learning({ lens }: { lens: Lens }) {
   return (
     <section id="learning" className="section" aria-labelledby="l-title">
       <div className="wrap">
-        <h2 id="l-title" className="section-title">
+        <h2 id="l-title" className="section-title" data-reveal="develop">
           A thirst I don’t plan to cure
         </h2>
         <table className="log">
@@ -278,8 +353,13 @@ export function Learning({ lens }: { lens: Lens }) {
             </tr>
           </thead>
           <tbody>
-            {learning.map((c) => (
-              <tr key={c.name} className={c.lenses.includes(lens) ? 'on' : 'off'}>
+            {learning.map((c, i) => (
+              <tr
+                key={c.name}
+                className={c.lenses.includes(lens) ? 'on' : 'off'}
+                data-reveal="rise"
+                style={{ '--i': i } as React.CSSProperties}
+              >
                 <td className="mono">{c.when}</td>
                 <td>
                   <span className="c-name">{c.name}</span>
@@ -304,12 +384,12 @@ export function Toolkit({ lens }: { lens: Lens }) {
   return (
     <section id="toolkit" className="section" aria-labelledby="t-title">
       <div className="wrap">
-        <h2 id="t-title" className="section-title">
+        <h2 id="t-title" className="section-title" data-reveal="develop">
           Tools I reach for
         </h2>
         <div className="kit">
-          {sorted.map((g) => (
-            <div key={g.group} className="kit-group">
+          {sorted.map((g, i) => (
+            <div key={g.group} className="kit-group" data-reveal="rise" style={{ '--i': i } as React.CSSProperties}>
               <h3>{g.group}</h3>
               <ul className="stack">
                 {g.items.map((s) => (
@@ -321,8 +401,8 @@ export function Toolkit({ lens }: { lens: Lens }) {
         </div>
         <h3 className="sub-title">Along the way</h3>
         <ul className="recog">
-          {recognition.map((r) => (
-            <li key={r.what}>
+          {recognition.map((r, i) => (
+            <li key={r.what} data-reveal="rise" style={{ '--i': i } as React.CSSProperties}>
               <span className="mono when">{r.when}</span>
               <strong>{r.what}</strong>
               <span className="note">{r.note}</span>
@@ -337,6 +417,10 @@ export function Toolkit({ lens }: { lens: Lens }) {
 /* ---------------- Close ---------------- */
 export function Close({ lens }: { lens: Lens }) {
   const [copied, setCopied] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] });
+  const zoom = useTransform(scrollYProgress, [0, 1], [1.22, 1]);
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
@@ -347,15 +431,22 @@ export function Close({ lens }: { lens: Lens }) {
     }
   };
   return (
-    <section id="contact" className="close" aria-labelledby="c-title">
+    <section ref={ref} id="contact" className="close" aria-labelledby="c-title">
       <div className="close-bg" aria-hidden="true">
-        <img className="photo" src={img(lens === 'build' ? 'saida-day' : 'saida-night')} alt="" loading="lazy" decoding="async" />
+        <motion.img
+          className="photo"
+          src={img(lens === 'build' ? 'saida-day' : 'saida-night')}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          style={reduce ? undefined : { scale: zoom }}
+        />
       </div>
       <div className="wrap close-inner">
-        <h2 id="c-title" className="close-title">
+        <h2 id="c-title" className="close-title" data-reveal="develop">
           Ask me something.
         </h2>
-        <p className="close-hand hand">I like questions. Send me a hard one.</p>
+        <p className="close-hand hand" data-reveal="write" style={{ '--i': 3 } as React.CSSProperties}>I like questions. Send me a hard one.</p>
         <div className="email-row">
           <a className="email" href={`mailto:${profile.email}`}>
             {profile.email}
@@ -390,7 +481,12 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="wrap footer-inner">
-        <p>© 2026 Reem Basho. Designed and built with React. No backend, no tracking.</p>
+        <p>
+          © 2026 Reem Basho. Designed and built with React. No backend, no tracking.{' '}
+          <button className="replay" onClick={replayIntro}>
+            Replay the opening
+          </button>
+        </p>
         <details>
           <summary>Photo credits</summary>
           <ul className="credits">

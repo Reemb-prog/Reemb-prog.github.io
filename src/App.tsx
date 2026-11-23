@@ -4,6 +4,10 @@ import { FilmStrip } from './components/FilmStrip';
 import { Detail } from './components/Detail';
 import { About, Close, Footer, Header, Hero, Learning, Now, Questions, Toolkit } from './components/Sections';
 import { initialLens, persistLens } from './lib';
+import { Intro, shouldRunIntro } from './components/Intro';
+import { CursorRing } from './components/CursorRing';
+import { ToTop } from './components/ToTop';
+import { useReveal } from './reveal';
 
 const byId = Object.fromEntries(projects.map((p) => [p.id, p]));
 
@@ -14,6 +18,9 @@ export default function App() {
   const [selected, setSelected] = useState<string>(order[first ?? 'build'][0]);
   const [flick, setFlick] = useState<null | Lens>(null);
   const flickTimer = useRef<number>(0);
+  const [intro] = useState(shouldRunIntro);
+  const [live, setLive] = useState(!intro);
+  useReveal(lens);
 
   const items = useMemo(() => order[lens].map((id) => byId[id]), [lens]);
 
@@ -82,12 +89,16 @@ export default function App() {
       <a className="skip" href="#work">
         Skip to projects
       </a>
+      {intro && <Intro onDone={() => setLive(true)} />}
+      {live && <CursorRing />}
+      {live && <ToTop />}
       <div className={`flicker${flick ? ' on' : ''}${flick === 'research' ? ' to-research' : ''}`} aria-hidden="true" />
       <Header lens={lens} onLens={setLens} />
       <main>
         <Hero
           lens={lens}
           chosen={chosen}
+          live={live}
           onLens={setLens}
           strip={<FilmStrip lens={lens} items={items} selectedId={selected} onSelect={select} />}
         />

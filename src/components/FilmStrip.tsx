@@ -82,6 +82,7 @@ export function FilmStrip({ lens, items, selectedId, onSelect }: Props) {
       <div
         ref={scroller}
         className={`film-scroller${dragging ? ' dragging' : ''}`}
+        data-cursor="drag"
         onScroll={updateEdges}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -156,7 +157,12 @@ function Frame({
       aria-label={`Frame ${num}: ${p.title}. Open on the loupe.`}
       onClick={onClick}
     >
-      <div className="frame-img" onPointerMove={onMove} onPointerLeave={() => setLp(null)}>
+      <div
+        className="frame-img"
+        data-cursor={p.img ? 'hide' : undefined}
+        onPointerMove={onMove}
+        onPointerLeave={() => setLp(null)}
+      >
         {p.img ? (
           <img
             key={`${p.id}-${lens}`}

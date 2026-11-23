@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import type { Lens, Project } from '../data/content';
 import { Glyph } from './Glyph';
 import { img } from '../lib';
+import { CountUp } from '../reveal';
 
 type Props = {
   lens: Lens;
@@ -29,7 +30,7 @@ export function Detail({ lens, items, selectedId, onSelect }: Props) {
   return (
     <section id="work" className="section" aria-labelledby="work-title">
       <div className="wrap">
-        <h2 id="work-title" className="section-title">
+        <h2 id="work-title" className="section-title" data-reveal="develop">
           {lens === 'build' ? 'On the light table' : 'Under the safelight'}
         </h2>
         <div className="detail">
@@ -95,7 +96,9 @@ export function Detail({ lens, items, selectedId, onSelect }: Props) {
                     <dl className="numbers">
                       {p.numbers.map((n) => (
                         <div key={n.label}>
-                          <dt>{n.value}</dt>
+                          <dt>
+                            <CountUp value={n.value} />
+                          </dt>
                           <dd>{n.label}</dd>
                         </div>
                       ))}

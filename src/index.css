@@ -111,20 +111,31 @@ button {
   border-radius: 2px;
 }
 
+/* Scrollbar: a rounded chinagraph pill on the lens ground. The ::-webkit
+   rules are used in Chromium and Safari; Firefox gets scrollbar-color. */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 ::-webkit-scrollbar-track {
   background: var(--ground);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--rule);
-  border-radius: 10px;
-  border: 2px solid var(--ground);
+  background: color-mix(in oklab, var(--mark) 72%, var(--ground));
+  border-radius: 999px;
+  border: 3px solid var(--ground);
+  background-clip: padding-box;
 }
-html {
-  scrollbar-color: var(--rule) var(--ground);
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--mark);
+}
+::-webkit-scrollbar-corner {
+  background: var(--ground);
+}
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: color-mix(in oklab, var(--mark) 72%, var(--ground)) var(--ground);
+  }
 }
 
 h1,
@@ -375,8 +386,20 @@ p {
   letter-spacing: -0.035em;
   line-height: 0.9;
 }
-.hero-name span {
+.hero-name .word {
   display: block;
+}
+.hero-name .ch {
+  --p: 0;
+  display: inline-block;
+  font-variation-settings: 'wdth' calc(125 - 38 * var(--p));
+  font-weight: calc(820 - 470 * var(--p));
+  transition:
+    font-variation-settings 650ms var(--ease-out),
+    font-weight 650ms var(--ease-out);
+}
+.hero-headline .w {
+  white-space: nowrap;
 }
 .hero-headline {
   margin-top: clamp(20px, 2.6vw, 32px);
@@ -976,8 +999,9 @@ p {
 }
 .questions-bg {
   position: absolute;
-  inset: 0;
+  inset: -10% 0;
   z-index: -1;
+  will-change: transform;
 }
 .questions-bg img {
   width: 100%;
@@ -1184,6 +1208,7 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform-origin: 50% 80%;
 }
 .close-bg::after {
   content: '';
@@ -1291,6 +1316,378 @@ p {
   color: var(--edge-dim);
 }
 
+/* ---------- Utilities ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.replay {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.22em;
+  cursor: pointer;
+}
+.replay:hover {
+  color: var(--ink);
+  text-decoration-color: var(--mark);
+}
+
+/* ---------- The opening (two collaborators lay out the sheet) ---------- */
+/* Before the script measures, the parts it will place stay hidden. A failsafe
+   reveals them if the script never runs. */
+html.intro .header,
+html.intro .hero-name .ch,
+html.intro .hero-headline .ch,
+html.intro .hero-role,
+html.intro .hero-pitch,
+html.intro .lens-option,
+html.intro .chooser-label,
+html.intro .chooser-hint,
+html.intro .hero-strip {
+  opacity: 0;
+  animation: intro-failsafe 1ms linear 6s forwards;
+}
+html.intro .frame[aria-current='true'] .circle-mark {
+  visibility: hidden;
+}
+html.intro-hold .develop {
+  animation-play-state: paused;
+}
+html.intro body {
+  overflow: hidden;
+}
+@keyframes intro-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+.intro-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+  opacity: 0;
+}
+.intro-layer.on {
+  opacity: 1;
+}
+.intro-box {
+  position: fixed;
+  border: 1.5px solid #1f43c7;
+  opacity: 0;
+}
+.intro-box .ib-handles i {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: #fff;
+  border: 1.5px solid #1f43c7;
+}
+.intro-box .ib-handles i:nth-child(1) { left: -5px; top: -5px; }
+.intro-box .ib-handles i:nth-child(2) { right: -5px; top: -5px; }
+.intro-box .ib-handles i:nth-child(3) { left: -5px; bottom: -5px; }
+.intro-box .ib-handles i:nth-child(4) { right: -5px; bottom: -5px; }
+.intro-box .ib-size {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  translate: -50% 0;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: #1f43c7;
+  color: #fff;
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.intro-caret {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 2px;
+  margin-left: 2px;
+  background: #1f43c7;
+  opacity: 0;
+}
+:root[data-lens='research'] .intro-caret {
+  background: #ffc53d;
+}
+.intro-circle {
+  position: fixed;
+  overflow: visible;
+  opacity: 0;
+}
+.intro-circle .ic-draw {
+  stroke: #7fa2ff;
+}
+:root[data-lens='research'] .intro-circle .ic-draw {
+  stroke: #ffd84a;
+}
+
+.intro-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+.intro-cursor .ic-body {
+  position: relative;
+  transform-origin: 2px 2px;
+}
+.intro-cursor .ic-arrow {
+  display: block;
+  margin: -2px 0 0 -2px;
+  overflow: visible;
+  transform-origin: 2px 2px;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.28));
+}
+.intro-cursor .ic-arrow path {
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+.intro-cursor.build .ic-arrow path { fill: #1f43c7; }
+.intro-cursor.research .ic-arrow path { fill: #e9a400; }
+.intro-cursor .ic-tag {
+  position: absolute;
+  left: 16px;
+  top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px 5px;
+  border-radius: 4px 999px 999px 999px;
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px -4px rgb(0 0 0 / 0.35);
+}
+.intro-cursor.build .ic-tag { background: #1f43c7; color: #fff; }
+.intro-cursor.research .ic-tag { background: #ffc53d; color: #1a0e0b; }
+.intro-cursor .ic-alt {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #1a0e0b;
+  color: #ffc53d;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0;
+}
+.intro-skip {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  translate: -50% 0;
+  padding: 6px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--ground) 80%, transparent);
+  color: var(--muted);
+  opacity: 0;
+}
+
+/* ---------- Back to top ---------- */
+.to-top {
+  position: fixed;
+  right: clamp(16px, 2.4vw, 32px);
+  bottom: clamp(16px, 2.4vw, 32px);
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ground-2);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  opacity: 0;
+  translate: 0 16px;
+  scale: 0.8;
+  pointer-events: none;
+  transition:
+    opacity 300ms var(--ease-out),
+    translate 450ms var(--ease-out),
+    scale 450ms var(--ease-out),
+    background-color var(--lens-dur),
+    color 200ms;
+}
+.to-top.on {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  pointer-events: auto;
+}
+.to-top:hover {
+  background: var(--mark);
+  color: var(--mark-ink);
+}
+.to-top:hover svg:not(.tt-ring) {
+  animation: tt-nudge 700ms var(--ease-out);
+}
+.to-top > svg:not(.tt-ring) {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+.tt-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  rotate: -90deg;
+  overflow: visible;
+}
+.tt-ring circle {
+  fill: none;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+.tt-track {
+  stroke: var(--rule);
+}
+.tt-fill {
+  stroke: var(--mark);
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 120ms linear;
+}
+.to-top:hover .tt-fill {
+  stroke: var(--mark-ink);
+}
+@keyframes tt-nudge {
+  40% { translate: 0 -4px; }
+}
+
+/* ---------- Cursor ring ---------- */
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+.cursor-ring.on {
+  opacity: 1;
+}
+.cursor-ring::before {
+  content: '';
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--mark);
+  transition:
+    transform 320ms var(--ease-out),
+    background-color 220ms,
+    opacity 220ms,
+    border-color 220ms;
+}
+.cursor-ring[data-state='link']::before {
+  transform: scale(1.6);
+  background: color-mix(in oklab, var(--mark) 14%, transparent);
+}
+.cursor-ring[data-state='hide']::before {
+  transform: scale(0.3);
+  opacity: 0;
+}
+.cursor-ring[data-state='label']::before {
+  transform: scale(2.3);
+  background: var(--edge);
+  border-color: var(--edge);
+}
+.cursor-ring.down::before {
+  transform: scale(0.8);
+}
+.cursor-ring[data-state='label'].down::before {
+  transform: scale(2);
+}
+.cr-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  translate: -50% -50%;
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--film);
+  opacity: 0;
+  transition: opacity 180ms;
+}
+.cursor-ring[data-state='label'] .cr-label {
+  opacity: 1;
+}
+
+/* ---------- Scroll reveals ---------- */
+/* Content is visible by default; only a running script with motion allowed
+   holds it back until it scrolls in. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    transition-timing-function: var(--ease-out);
+  }
+  /* titles develop like a print: out of focus, loosely spaced, then sharp */
+  html.js [data-reveal='develop'] {
+    transition-property: opacity, filter, letter-spacing;
+    transition-duration: 900ms, 1300ms, 1500ms;
+  }
+  html.js [data-reveal='develop']:not(.is-in) {
+    opacity: 0;
+    filter: blur(14px);
+    letter-spacing: 0.05em;
+  }
+  /* prints are dropped onto the table */
+  html.js [data-reveal='drop'] {
+    transition-property: opacity, translate, rotate, scale, box-shadow;
+    transition-duration: 450ms, 1000ms, 1200ms, 1000ms, 1000ms;
+  }
+  html.js [data-reveal='drop']:not(.is-in) {
+    opacity: 0;
+    translate: 0 -44px;
+    rotate: 7deg;
+    scale: 1.07;
+    box-shadow: 0 40px 70px -30px rgb(0 0 0 / 0.45);
+  }
+  html.js [data-reveal='rise'] {
+    transition-property: opacity, translate;
+    transition-duration: 700ms, 900ms;
+    transition-delay: min(calc(var(--i, 0) * 60ms), 480ms);
+  }
+  html.js [data-reveal='rise']:not(.is-in) {
+    opacity: 0;
+    translate: 0 18px;
+  }
+  /* questions are written on, left to right */
+  html.js [data-reveal='write'] {
+    clip-path: inset(-30px -60px -30px -20px);
+    transition: clip-path 1100ms cubic-bezier(0.45, 0, 0.2, 1);
+    transition-delay: min(calc(var(--i, 0) * 130ms), 900ms);
+  }
+  html.js [data-reveal='write']:not(.is-in) {
+    clip-path: inset(-30px 100% -30px -20px);
+  }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {
   .hero-top,
@@ -1390,5 +1787,8 @@ p {
   }
   .flicker {
     display: none;
+  }
+  .hero-name .ch {
+    transition: none;
   }
 }

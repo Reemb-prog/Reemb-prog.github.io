@@ -16,6 +16,12 @@
 - Initial JS is 106 KB gzipped (motion features are lazy-loaded).
 - Added the GitHub Pages workflow, README, DESIGN.md and docs/DECISIONS.md.
 
+## 2026-11-23 — session 3 (a more impactful opening)
+
+- Added the opening: two collaborator cursors build the hero in front of the visitor (selection box, typed headline, alt-dragged lens card, pulled-in film, traced circle), then hand over. Once per tab, skippable, off under reduced motion.
+- Added the name reacting to the pointer, a contextual cursor ring, and scroll motion (titles develop, prints drop, rows rise, questions write on, numbers count up, parallax on the star and closing photos).
+- Checked at 1440×900 and 375×812, both lenses, no console errors. Initial JS is now about 116 KB gzipped.
+
 ### Open items for the owner
 
 - Optional: separate CV PDFs per lens (see README → Editing content).

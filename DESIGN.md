@@ -44,6 +44,10 @@ Scale: name `clamp(3rem, 7.4vw, 5.4rem)`; section title `clamp(2.25rem, 5.4vw, 4
 
 Ease-out `cubic-bezier(0.16, 1, 0.3, 1)`. One idea per moment:
 
+- **The opening** (`src/components/Intro.tsx`, about 5 s, once per tab, skipped by any click, key, wheel or touch): two labelled collaborator cursors, "Reem · build" (`#1f43c7`) and "Reem · research" (`#ffc53d`), assemble the real hero. Build draws a selection box (with a size tag) and the name stretches in (`wdth` 62 → 125); a caret types the headline; Research drops the Build card and alt-drags its twin into the Research slot; the film peeks in from the right, gets grabbed at its leading edge and pulled home, then the frames develop; Build writes "Who's looking?" and traces the grease-pencil circle around frame 01 (skipped when frame 01 is below the fold); each cursor ends pointing at its own lens card and hands over. It animates the live DOM with WAAPI and cancels to the normal CSS, so a skip is instant and a script failure shows the page after 6 s. `?intro-debug` freezes it and exposes `window.__introSeek(ms)`. Footer "Replay the opening" plays it again.
+- **Light through the name**: letters near the pointer thin and narrow (`wght` 820 → 350, `wdth` 125 → 87), then settle (fine pointers only).
+- **Cursor ring**: a 30px chinagraph ring trails the pointer; it says "drag" on the film, hides under the loupe and swells over controls (fine pointers only; the native cursor stays).
+- **Scroll**: section titles develop (blur 14px + loose tracking → sharp); prints drop onto the table (rotate 7°, lift, settle); list rows rise in a capped 60 ms stagger; questions are written on left to right (clip-path); numbers count up; the hero lifts away, the star photo drifts and the closing photo slowly settles from 1.22× zoom.
 - photos develop from overexposed (1.4 s, staggered 90 ms)
 - lens flicker (620 ms, stepped), with the world swapping at 90 ms
 - frames re-order with spring layout (stiffness 260, damping 30)

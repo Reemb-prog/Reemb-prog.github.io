@@ -15,6 +15,19 @@
         var q = new URLSearchParams(location.search).get('lens') || localStorage.getItem('rb-lens');
         if (q === 'research' || q === 'build') document.documentElement.dataset.lens = q;
       } catch (e) {}
+      // The opening plays once per tab, from the top, unless motion is reduced.
+      (function () {
+        var h = document.documentElement;
+        h.classList.add('js');
+        try {
+          var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var seen = sessionStorage.getItem('rb-intro-seen');
+          if (!calm && !seen && !location.hash) {
+            h.classList.add('intro', 'intro-hold');
+            history.scrollRestoration = 'manual';
+          }
+        } catch (e) {}
+      })();
     </script>
   </head>
   <body>

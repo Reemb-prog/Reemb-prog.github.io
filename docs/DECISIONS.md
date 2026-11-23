@@ -56,7 +56,7 @@ All of it turns off under `prefers-reduced-motion`.
 
 ## Performance
 
-- Initial JS is about 106 KB gzipped. The animation library's layout features load as a separate chunk.
+- Initial JS is about 116 KB gzipped (106 KB before the opening and scroll motion were added). The animation library's layout features load as a separate chunk.
 - 18 photos as WebP total about 640 KB, lazy-loaded except the first frames.
 - Fonts are self-hosted and split by unicode range, so only the Latin subset downloads.
 - No backend, no analytics, no external requests at runtime.
