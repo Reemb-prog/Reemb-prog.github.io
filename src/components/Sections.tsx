@@ -172,8 +172,9 @@ function HeroName({ live }: { live: boolean }) {
   }, [live]);
   return (
     <h1 ref={ref} className="hero-name" aria-label="Reem Basho">
-      {['Reem', 'Basho'].map((w) => (
+      {['Reem', 'Basho'].map((w, wi) => (
         <span key={w} className="word" aria-hidden="true">
+          {wi > 0 && <span className="sr-only"> </span>}
           {[...w].map((c, i) => (
             <span key={i} className="ch">
               {c}

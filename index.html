@@ -3,13 +3,83 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reem Basho · Builder and Researcher</title>
-    <meta name="description" content="Reem Basho, Computer Science senior at Rafic Hariri University. Software developer and team lead, and a curious AI researcher. Pick a lens." />
+    <title>Reem Basho · Software Developer and AI Researcher</title>
+    <meta
+      name="description"
+      content="Reem Basho is a Computer Science senior at Rafic Hariri University, Lebanon: a software developer and team lead, and a curious AI researcher. Projects and CV."
+    />
+    <meta name="author" content="Reem Basho" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
     <meta name="theme-color" content="#e9ecea" />
-    <meta property="og:title" content="Reem Basho · Builder and Researcher" />
-    <meta property="og:description" content="I question things, then I build something to find out." />
-    <meta property="og:type" content="website" />
+    <meta name="color-scheme" content="light dark" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Reem Basho" />
+    <meta property="og:title" content="Reem Basho · Software Developer and AI Researcher" />
+    <meta property="og:description" content="I question things, then I build something to find out. Projects, CV and contact." />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Reem Basho: I question things, then I build something to find out. A film strip of project photos." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="profile:first_name" content="Reem" />
+    <meta property="profile:last_name" content="Basho" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Reem Basho · Software Developer and AI Researcher" />
+    <meta name="twitter:description" content="I question things, then I build something to find out." />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og.jpg" />
+
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "%VITE_SITE_URL%/#reem",
+            "name": "Reem Basho",
+            "url": "%VITE_SITE_URL%/",
+            "image": "%VITE_SITE_URL%/og.jpg",
+            "jobTitle": "Software Developer and AI Researcher",
+            "description": "Computer Science senior at Rafic Hariri University. Software developer and team lead, and a curious AI researcher.",
+            "address": { "@type": "PostalAddress", "addressLocality": "Saida", "addressCountry": "LB" },
+            "alumniOf": { "@type": "CollegeOrUniversity", "name": "Rafic Hariri University", "sameAs": "https://www.rhu.edu.lb/" },
+            "knowsAbout": [
+              "Software development",
+              "React",
+              "TypeScript",
+              "Test-driven development",
+              "AI coding agents",
+              "Computer vision",
+              "Diffusion models",
+              "Vision-language models",
+              "Machine learning research"
+            ],
+            "sameAs": ["https://github.com/Reemb-prog", "https://www.linkedin.com/in/reem-basho/"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "%VITE_SITE_URL%/#site",
+            "url": "%VITE_SITE_URL%/",
+            "name": "Reem Basho",
+            "inLanguage": "en",
+            "author": { "@id": "%VITE_SITE_URL%/#reem" }
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "%VITE_SITE_URL%/#page",
+            "url": "%VITE_SITE_URL%/",
+            "name": "Reem Basho · Software Developer and AI Researcher",
+            "isPartOf": { "@id": "%VITE_SITE_URL%/#site" },
+            "mainEntity": { "@id": "%VITE_SITE_URL%/#reem" }
+          }
+        ]
+      }
+    </script>
     <script>
       try {
         var q = new URLSearchParams(location.search).get('lens') || localStorage.getItem('rb-lens');
@@ -31,7 +101,7 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

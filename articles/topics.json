@@ -1,0 +1,76 @@
+{
+  "_readme": "The weekly writer takes the first topic in `queue`, writes it, and moves it to `used`. Add, remove or reorder topics freely. category is development, research or notes. When the queue is empty, the writer proposes its own topic in the next category of the rotation.",
+  "queue": [
+    {
+      "title": "Zod at the boundaries: making API contracts executable",
+      "category": "development",
+      "angle": "Why validating data where it enters and leaves a TypeScript app catches drift that types alone miss, with small before/after examples."
+    },
+    {
+      "title": "What CLIP similarity does and does not tell you about a generated image",
+      "category": "research",
+      "angle": "A practical explainer of CLIP score as an evaluation metric for image generation: what it captures, where it fails, and how to pair it with other checks."
+    },
+    {
+      "title": "Running only the affected tests: fast feedback without skipping safety",
+      "category": "development",
+      "angle": "How to scope test runs to what changed (Vitest related/changed modes, Playwright tags), and when you still need the full suite."
+    },
+    {
+      "title": "Reading a research paper the way CS197 taught me to",
+      "category": "notes",
+      "angle": "A repeatable method for reading ML papers: first pass, questions, reproducing one figure, and writing down what you still don't believe."
+    },
+    {
+      "title": "LoRA in plain words: what rank 16 actually changes",
+      "category": "research",
+      "angle": "An intuitive explanation of low-rank adaptation for fine-tuning large models, what the rank controls, and the trade-offs on a single small GPU."
+    },
+    {
+      "title": "Building an Arabic-first interface that doesn't feel translated",
+      "category": "development",
+      "angle": "Practical RTL and Arabic typography lessons for web apps: logical CSS properties, mirrored icons, numerals, font choice, and testing with real content."
+    },
+    {
+      "title": "Retrieval without a language model: how far can search go?",
+      "category": "research",
+      "angle": "Classic retrieval (BM25, TF-IDF, good chunking) for answering questions over a long document, and when adding an LLM is actually worth it."
+    },
+    {
+      "title": "Playwright plus axe-core: accessibility checks that run on every pull request",
+      "category": "development",
+      "angle": "Setting up automated accessibility testing in end-to-end tests, what it catches, and what still needs a human with a keyboard and a screen reader."
+    },
+    {
+      "title": "Why a vision-language model can look at a diagram and still guess",
+      "category": "research",
+      "angle": "Visual grounding failures in small multimodal models: what they look like, why they happen, and simple ways to probe for them."
+    },
+    {
+      "title": "A decision log for small teams: the cheapest documentation that pays off",
+      "category": "notes",
+      "angle": "What to record in a lightweight decision log, a simple template, and how it helps both humans and AI coding agents stay consistent."
+    },
+    {
+      "title": "Edge detection, learned versus designed",
+      "category": "research",
+      "angle": "Comparing classic detectors like Canny with learned edge models: what each gets right, and what we give up when edges are learned."
+    },
+    {
+      "title": "Designing a CLI that hands work to AI coding agents safely",
+      "category": "development",
+      "angle": "What a small Node.js CLI can enforce before an agent starts: fresh branches, acceptance criteria, allowed paths, and a plan step."
+    },
+    {
+      "title": "Speech emotion recognition: what the model hears and what it misses",
+      "category": "research",
+      "angle": "An introduction to recognising emotion from voice features, common datasets and their limits, and why accuracy numbers can mislead."
+    },
+    {
+      "title": "Learning in chains: following one course into the next",
+      "category": "notes",
+      "angle": "How one bootcamp led to CS229, then CS230, then research methods courses, and how to pick the next thing to learn from the last one."
+    }
+  ],
+  "used": []
+}

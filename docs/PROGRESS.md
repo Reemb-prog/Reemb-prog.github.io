@@ -26,3 +26,9 @@
 
 - Optional: separate CV PDFs per lens (see README → Editing content).
 - Push to GitHub and set Pages → Source to "GitHub Actions".
+
+## 2026-11-23 — session 4 (SEO and articles)
+
+- SEO: new title and description, canonical, Open Graph and Twitter tags with a drawn share image, Person / WebSite / ProfilePage structured data, apple-touch-icon, prerendered HTML, sitemap.xml, robots.txt and 404.html.
+- Added `/articles` ("Field notes"): a static blog generated at build time from Markdown, with RSS, BlogPosting structured data and its own reading-first design. Not linked from the portfolio.
+- Weekly workflow writes one article every Monday with GitHub Models (free), validates it, commits and redeploys. Owner chose auto-publish. Two launch articles written from real project facts (the agent harness, the ControlNet experiment).

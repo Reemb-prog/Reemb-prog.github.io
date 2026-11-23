@@ -55,6 +55,45 @@ All text lives in **`src/data/content.ts`**. Components only read from it.
 
 **Adding a project.** Add an entry to `projects`, put a photo in `public/img/<name>.webp` (about 1400px wide, WebP), set `img: '<name>'`, then add its id to `order.build` and/or `order.research`. Projects without a photo can use `glyph: 'count'` or `glyph: 'ledger'` (drawn figures in `src/components/Glyph.tsx`). Add the photo's license to `docs/CREDITS.md` and `src/data/credits.ts`.
 
+## SEO
+
+- `index.html` holds the title, description, canonical URL, Open Graph and Twitter tags, and Person / WebSite / ProfilePage structured data. The site address comes from `VITE_SITE_URL` in `.env`; change it there if you move to a custom domain.
+- The build **prerenders** the page (`src/entry-server.tsx`, `scripts/prerender.mjs`), so the full text is in the HTML for search engines and link previews, not only after JavaScript runs.
+- The build also writes `sitemap.xml`, `robots.txt` and `404.html`.
+- Share images: `public/og.jpg`, `articles/og.jpg` and `public/apple-touch-icon.png` are drawn from the site's fonts and photos by `npm run og-images` (needs Python with Pillow, fontTools and brotli).
+
+After the first deploy, add the site in [Google Search Console](https://search.google.com/search-console) and submit `https://reemb-prog.github.io/sitemap.xml`. That's the fastest way to get indexed.
+
+## Articles (/articles)
+
+A separate blog, **Field notes**, at `/articles/`. It isn't linked from the portfolio and the portfolio isn't linked from it. Its job is to make Reem findable in search. Behind the scenes, its structured data names the same author (same GitHub and LinkedIn), so search engines can tell it's the same person.
+
+| What | Where |
+|---|---|
+| Posts | `articles/posts/YYYY-MM-DD-slug.md` (front matter: title, description, date, category, tags, slug) |
+| Topic queue | `articles/topics.json` (the weekly writer takes the first one) |
+| Look | `articles/style.css` (light paper by day, darkroom at night, follows the reader's system setting) |
+| Generator | `scripts/build-articles.mjs` → index pages, one page per post, `feed.xml` (RSS), sitemap |
+
+**Writing one yourself.** Add a Markdown file to `articles/posts/` with the same front matter as the existing ones. `category` is `development`, `research` or `notes`. Add `draft: true` to keep it unpublished. Posts dated in the future wait until that date's build.
+
+**The weekly writer.** `.github/workflows/weekly-article.yml` runs every Monday at 06:00 UTC. It:
+
+1. takes the next topic from `articles/topics.json` (or, when the queue is empty, has the model pick a fresh topic in the next category of the rotation),
+2. writes the article with **GitHub Models** (free, uses the workflow's built-in token, model `openai/gpt-4.1` with `gpt-4.1-mini` as fallback),
+3. checks it: format, length, at least four sections, no talk of being an AI, and removes any link that isn't to official docs, so citations can't be invented,
+4. builds the site to make sure nothing breaks, commits the post, and redeploys.
+
+The writing rules (voice, and never inventing experiences, numbers or quotes) are in `SYSTEM` at the top of `scripts/write-article.mjs`.
+
+One-time setup on GitHub:
+
+- Nothing is needed for auto-publishing. To test it, open **Actions → Weekly article → Run workflow**.
+- **Review mode (optional):** under **Settings → Secrets and variables → Actions → Variables**, add `ARTICLE_REVIEW_MODE` = `true`. Each article then arrives as a pull request and goes live when you merge it. This also needs **Settings → Actions → General → Allow GitHub Actions to create and approve pull requests**.
+- **Another model (optional):** set the variable `ARTICLE_MODEL`, e.g. `openai/gpt-4.1-mini`.
+
+If a run fails (for example the model's free rate limit), GitHub emails you, and nothing is published that week.
+
 ## How it works
 
 | Interaction | Behaviour |

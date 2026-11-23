@@ -1,0 +1,87 @@
+name: Weekly article
+
+# Every Monday 06:00 UTC (09:00 in Beirut): write one article with GitHub
+# Models (free, uses the built-in token), commit it, and redeploy the site.
+# Run it by hand from the Actions tab with "Run workflow".
+#
+# Repository variables (Settings → Secrets and variables → Actions → Variables):
+#   ARTICLE_MODEL         model id, default openai/gpt-4.1
+#   ARTICLE_REVIEW_MODE   set to "true" to get a pull request instead of auto-publishing
+on:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  models: read
+  pull-requests: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: weekly-article
+  cancel-in-progress: false
+
+jobs:
+  write:
+    runs-on: ubuntu-latest
+    outputs:
+      published: ${{ steps.write.outputs.published }}
+      review: ${{ steps.commit.outputs.review }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Write the article
+        id: write
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTICLE_MODEL: ${{ vars.ARTICLE_MODEL }}
+        run: node scripts/write-article.mjs
+
+      - name: Check it builds
+        if: steps.write.outputs.published == 'true'
+        run: npm run build
+
+      - name: Commit, or open a pull request in review mode
+        id: commit
+        if: steps.write.outputs.published == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TITLE: ${{ steps.write.outputs.title }}
+          SLUG: ${{ steps.write.outputs.slug }}
+          REVIEW: ${{ vars.ARTICLE_REVIEW_MODE }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add articles/
+          if [ "$REVIEW" = "true" ]; then
+            branch="article/$SLUG"
+            git switch -c "$branch"
+            git commit -m "Article draft: $TITLE"
+            git push origin "$branch"
+            gh pr create --base main --head "$branch" \
+              --title "Article: $TITLE" \
+              --body "This week's article, written by the weekly workflow. Merge it to publish, or edit it first. Topic queue: articles/topics.json."
+            echo "review=true" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "Article: $TITLE"
+            git push origin HEAD:main
+            echo "review=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  # Pushes made with the built-in token don't trigger other workflows,
+  # so deploy explicitly after an auto-published article.
+  deploy:
+    needs: write
+    if: needs.write.outputs.published == 'true' && needs.write.outputs.review != 'true'
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ref: main

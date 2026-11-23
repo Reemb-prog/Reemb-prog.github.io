@@ -19,7 +19,7 @@ const CIRCLE =
 type Way = { t: number; x: number; y: number; ease?: string };
 
 export function shouldRunIntro() {
-  return document.documentElement.classList.contains('intro');
+  return typeof document !== 'undefined' && document.documentElement.classList.contains('intro');
 }
 
 export function replayIntro() {
