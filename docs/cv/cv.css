@@ -38,11 +38,14 @@ h1 {
 }
 .contact {
   margin-top: 3pt;
-  font-size: 9.6pt;
+  font-size: 9.4pt;
   color: #333;
 }
+.contact span {
+  white-space: nowrap;
+}
 .contact span + span::before {
-  content: '  |  ';
+  content: ' | ';
   white-space: pre;
   color: #888;
 }
