@@ -39,7 +39,7 @@ All text lives in **`src/data/content.ts`**. Components only read from it.
 | What | Where in `content.ts` |
 |---|---|
 | Name, headline, per-lens role and pitch, email, links | `profile` |
-| CV PDF per lens | `profile.cv` (files go in `public/cv/`) |
+| CV PDFs (one per lens) and the header dropdown labels | `profile.cv`, `profile.cvs` (files in `public/cv/`, sources in `docs/cv/`) |
 | About paragraphs | `about` |
 | Projects (question, what I did, numbers, honest note, stack) | `projects` |
 | Which projects each lens shows, and in what order | `order` |
@@ -49,7 +49,7 @@ All text lives in **`src/data/content.ts`**. Components only read from it.
 | Skills | `skills` |
 | Recognition | `recognition` |
 
-**CV PDFs.** `public/cv/Reem-Basho-CV.pdf` was exported from the November 2026 CV and is used by both lenses. To give each lens its own version, add e.g. `Reem-Basho-CV-Research.pdf` and point `profile.cv.research` at it.
+**CV PDFs.** Two tailored CVs: `Reem-Basho-CV-Software-Engineer.pdf` (1 page, build lens) and `Reem-Basho-CV-Research.pdf` (2 pages, research lens). The header's CV button opens a dropdown with both; the contact section downloads the current lens's one. Edit the HTML sources in `docs/cv/` and rebuild the PDFs as described in `docs/cv/README.md`.
 
 **Sharing a lens.** Add `?lens=research` or `?lens=build` to the URL. That's handy to link from a research-focused or a dev-focused application.
 
@@ -121,8 +121,9 @@ src/
   lib.ts              lens persistence, asset paths
 public/
   img/                18 photos (WebP, about 640 KB total)
-  cv/                 CV PDF
+  cv/                 the two CV PDFs
 docs/
+  cv/                 HTML sources for the CV PDFs
   DECISIONS.md        why it's designed this way, for the reader and for future edits
   CREDITS.md          photo licenses
   PROGRESS.md         build log

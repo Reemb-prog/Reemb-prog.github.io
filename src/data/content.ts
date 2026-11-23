@@ -20,11 +20,15 @@ export const profile = {
   github: 'https://github.com/Reemb-prog',
   githubHandle: 'Reemb-prog',
   linkedin: 'https://www.linkedin.com/in/reem-basho/',
-  // Drop separate PDFs into public/cv/ and point each lens at its own file.
+  // Tailored CVs, built from docs/cv/*.html (see docs/cv/README.md). Each lens defaults to its own.
   cv: {
-    build: 'cv/Reem-Basho-CV.pdf',
-    research: 'cv/Reem-Basho-CV.pdf',
+    build: 'cv/Reem-Basho-CV-Software-Engineer.pdf',
+    research: 'cv/Reem-Basho-CV-Research.pdf',
   },
+  cvs: [
+    { lens: 'build', label: 'Software engineer CV', note: '1 page' },
+    { lens: 'research', label: 'Research CV', note: '2 pages' },
+  ] as { lens: Lens; label: string; note: string }[],
   facts: [
     'B.Sc. Computer Science · Rafic Hariri University · 2024–2027',
     'Saida, Lebanon',

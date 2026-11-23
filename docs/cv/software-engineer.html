@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reem Basho - CV - Software Engineer</title>
+    <link rel="stylesheet" href="cv.css" />
+    <style>
+      /* One-page fit: slightly tighter than the shared style. */
+      @page { margin: 11mm 14mm 10mm; }
+      html { font-size: 10.1pt; line-height: 1.27; }
+      h2 { margin-top: 6.5pt; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Reem Basho</h1>
+      <p class="tagline">Software Engineer · Full-Stack Web · AI-Assisted Delivery</p>
+      <p class="contact">
+        <span>Saida, Lebanon</span><span><a href="mailto:BashoRW@students.rhu.edu.lb">BashoRW@students.rhu.edu.lb</a></span><span><a href="https://github.com/Reemb-prog">github.com/Reemb-prog</a></span><span><a href="https://www.linkedin.com/in/reem-basho/">linkedin.com/in/reem-basho</a></span>
+      </p>
+    </header>
+
+    <h2>Summary</h2>
+    <p class="summary">
+      Computer Science senior (graduating 2027) who ships tested production web apps in TypeScript, React and Supabase. Leading a
+      four-developer internship team that builds one product with parallel AI coding agents, coordinated through typed contracts,
+      plan-before-code gates and a Jira-synced harness.
+    </p>
+
+    <h2>Experience</h2>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Team Lead, TechTalks Internship <em>· PanelCare, solar maintenance platform</em></span>
+        <span class="when">Nov 2026 – Present</span>
+      </div>
+      <ul>
+        <li>Lead four developers building a maintenance web app (sites, plans, dispatch, inspections, service reports) over two sprints.</li>
+        <li>Designed a harness repository so four Claude Code / Codex sessions build one product in parallel without conflicts: shared agent rules, typed API contracts, a design blueprint and a change-controlled decision log, synced with 21 Jira work items.</li>
+        <li>Built a Node.js CLI that opens one branch per Jira item, scopes each agent to its acceptance criteria and allowed paths, and runs only affected tests; every PR gets a non-author review.</li>
+      </ul>
+      <p class="stack"><b>Stack:</b> TypeScript, Next.js 15, React 19, Tailwind CSS v4, Zod, Vitest, Playwright, Supabase, Vercel</p>
+    </div>
+
+    <h2>Projects</h2>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Baraem Quran Course <em>· mosque course management app, in production</em></span>
+        <span class="when">Oct – Nov 2026</span>
+      </div>
+      <ul>
+        <li>Mobile-first Arabic RTL app: attendance, recitation tracking, room booking and a USD / LBP fee ledger with audit trail.</li>
+        <li>Roles enforced in PostgreSQL row-level security; delivered in 4 gated phases with 228 Vitest tests plus Playwright and pgTAP.</li>
+      </ul>
+      <p class="stack"><b>Stack:</b> TypeScript, React 19, Vite, TanStack Query, Zod, Supabase (RLS, Auth, Edge Functions), Vercel, GitHub Actions</p>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Memory Book Studio <em>· canvas editor for digital memory books, in production</em></span>
+        <span class="when">Nov 2026</span>
+      </div>
+      <ul>
+        <li>Canva-style editor (snapping, masks, undo / redo, Arabic RTL templates) with 3D page-turn reading and in-browser MP4 export.</li>
+        <li>Secure media gateway with AES-GCM tokens and byte-range streaming over user-owned Google Drive; ~104 Playwright and integration tests.</li>
+      </ul>
+      <p class="stack"><b>Stack:</b> TypeScript, React 19, React Konva, Convex, Cloudflare Workers, Google Drive API (OAuth)</p>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Leila Hneini <em>· bilingual portfolio site with owner studio, client project</em></span>
+        <span class="when">Oct – Nov 2026</span>
+      </div>
+      <ul>
+        <li>English / Arabic site from an approved Figma design with an owner-only editor for drafts, publishing and uploads; ~108 Playwright tests with axe-core checks.</li>
+      </ul>
+      <p class="stack"><b>Stack:</b> Next.js 16, React 19, Tailwind CSS v4, next-intl, Zod, dnd-kit, Supabase</p>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">RHU Catalog Explorer <em>· cited-answer chatbot over a 429-page catalog</em></span>
+        <span class="when">Nov 2026</span>
+      </div>
+      <ul>
+        <li>Retrieval chatbot with page-level citations and conflict flagging using classical NLP (TF-IDF, no LLM), an SVM intent router and a per-step trace view; tested with pytest.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">VentureForge AI <em>· multi-agent planning platform prototype</em></span>
+        <span class="when">Jul 2026</span>
+      </div>
+      <ul>
+        <li>Designed typed shared state, agent contracts, step-level persistence, retry / repair and trace logging so raw model output is never trusted directly (React, FastAPI, PostgreSQL, LangGraph, Pydantic).</li>
+      </ul>
+    </div>
+
+    <h2>Education</h2>
+    <div class="entry">
+      <div class="row">
+        <span class="what">B.Sc. Computer Science <em>· Rafic Hariri University, Lebanon</em></span>
+        <span class="when">2024 – 2027 (expected)</span>
+      </div>
+      <ul>
+        <li>Winner, RHU Web Development Competition (May 2024) and CS scholarship. Also Harvard CS50 and Meta Back-End / React tracks.</li>
+      </ul>
+    </div>
+
+    <h2>Technical Skills</h2>
+    <dl class="skills">
+      <dt>Languages</dt>
+      <dd>TypeScript, JavaScript, Python, C#, C++, SQL</dd>
+      <dt>Front end</dt>
+      <dd>React 19, Next.js, Vite, Tailwind CSS, TanStack Query, HTML / CSS, accessibility (axe-core), RTL / i18n</dd>
+      <dt>Back end &amp; data</dt>
+      <dd>Supabase (PostgreSQL, RLS, Edge Functions), Convex, FastAPI, Django, Flask, MySQL, Microsoft SQL</dd>
+      <dt>Testing &amp; delivery</dt>
+      <dd>Vitest, Playwright, pgTAP, pytest, GitHub Actions, Vercel, Cloudflare Workers, Git</dd>
+      <dt>AI &amp; workflow</dt>
+      <dd>Claude Code, Codex, Cursor, LangGraph, OpenAI Agents SDK, MCP, Jira (Scrum)</dd>
+    </dl>
+
+    <h2>Achievements</h2>
+    <ul class="plain">
+      <li>Lebanese Collegiate Programming Contest (LCPC 2026), AUB · Microsoft Office Specialist, 2nd nationally (2019, 2020).</li>
+    </ul>
+  </body>
+</html>

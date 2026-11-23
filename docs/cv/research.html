@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Reem Basho - CV - Research</title>
+    <link rel="stylesheet" href="cv.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Reem Basho</h1>
+      <p class="tagline">Undergraduate Researcher · Diffusion Models · Multimodal Learning · Evaluation</p>
+      <p class="contact">
+        <span>Saida, Lebanon</span><span><a href="mailto:BashoRW@students.rhu.edu.lb">BashoRW@students.rhu.edu.lb</a></span><span><a href="https://github.com/Reemb-prog">github.com/Reemb-prog</a></span><span><a href="https://www.linkedin.com/in/reem-basho/">linkedin.com/in/reem-basho</a></span>
+      </p>
+    </header>
+
+    <h2>Research Interests</h2>
+    <p class="summary">
+      Controllability and creativity in diffusion models: locating the stage of the denoising trajectory where an image already has
+      structure but can still become many different valid outputs, and bounding interventions inside it. Also multimodal
+      vision-language learning, and evaluation that matches the task, with honest reporting of limits.
+    </p>
+
+    <h2>Education</h2>
+    <div class="entry">
+      <div class="row">
+        <span class="what">B.Sc. Computer Science <em>· Rafic Hariri University, Lebanon</em></span>
+        <span class="when">2024 – 2027 (expected)</span>
+      </div>
+      <ul>
+        <li>Relevant coursework: Image Processing and Pattern Recognition (Dr. Roaa Soloh); Natural Language Processing.</li>
+        <li>Computer Science scholarship; winner, RHU Web Development Competition (May 2024).</li>
+      </ul>
+    </div>
+
+    <h2>Research Projects</h2>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Adaptive ControlNet Stopping <em>· exploratory research experiment</em></span>
+        <span class="when">Jul 2026</span>
+      </div>
+      <ul>
+        <li>Asked whether ControlNet guidance is still needed once structure has formed: Stable Diffusion 1.5 + Canny ControlNet, DDIM, 30 steps, comparing full control, fixed stop, gradual decay and a training-free adaptive stop.</li>
+        <li>Designed stopping signals from edge-F1 consistency, low-frequency latent change, residual magnitude and trend, high-frequency residual share, rolling slope and drop-from-best; added counterfactual oracle labels and a sequential router.</li>
+        <li>60 reference generations (30 cases × 2 seeds) under safety limits of edge-F1 loss ≤ 0.02 and CLIP loss ≤ 0.01. The oracle needed 27.5 steps on average, while the held-out router conservatively chose step 29, showing room to stop earlier that the router has not yet captured.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Qwen2.5-VL Fine-Tuning on MMMU <em>· multimodal learning trial</em></span>
+        <span class="when">Jun 2026</span>
+      </div>
+      <ul>
+        <li>LoRA fine-tuning of Qwen2.5-VL-3B-Instruct to generate exam-style questions from diagrams (MMMU Accounting, Biology, Chemistry; 20 samples each), r = 16, α = 32, 30 steps on a Tesla T4.</li>
+        <li>Analysed loss, approximate perplexity and samples; weak visual grounding exposed the limits of small data, short training and loss-only evaluation, motivating task-aligned metrics.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">CS197 Research Idea Portfolio <em>· AI + mathematics</em></span>
+        <span class="when">Jun 2026</span>
+      </div>
+      <ul>
+        <li>Screened research questions with CS197 methods (nearest-neighbour literature search, explicit "bit flip", thesis and claim, evaluation design, feasibility, short pilots) across calibration reliability, prompt sensitivity, nonuniform matrix completion, GNN oversmoothing and a spectral stopping proposal for multimodal completion.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Classical vs. Learned Edge Detection <em>· comparative research assessment</em></span>
+        <span class="when">Apr 2026</span>
+      </div>
+      <ul>
+        <li>Compared Canny's framework with RankED (CVPR 2024) on mathematical foundations, objectives, assumptions, interpretability, data dependence and compute.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">RHU Catalog Explorer <em>· retrieval with citations, no LLM</em></span>
+        <span class="when">Nov 2026</span>
+      </div>
+      <ul>
+        <li>Cited-answer retrieval over a 429-page catalog with TF-IDF, page-level citations, conflict flagging, an SVM intent router, an ABSA feedback module and a per-step trace view.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Speech Emotion Recognition <em>· AI bootcamp capstone, team project</em></span>
+        <span class="when">Aug – Sep 2025</span>
+      </div>
+      <ul>
+        <li>End-to-end pipeline (MFCC features, training, tuning, confusion-matrix evaluation) comparing classical ML and deep learning on accuracy, complexity and inference time; served as a Flask API demo.</li>
+      </ul>
+    </div>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Pill Detection and Counting <em>· computer vision project</em></span>
+        <span class="when">2026</span>
+      </div>
+      <ul>
+        <li>Moved from classical segmentation to a trained object detector; prepared data, trained weights and validated counts visually.</li>
+      </ul>
+    </div>
+
+    <h2>Experience</h2>
+    <div class="entry">
+      <div class="row">
+        <span class="what">Team Lead, TechTalks Internship <em>· PanelCare, solar maintenance platform</em></span>
+        <span class="when">Nov 2026 – Present</span>
+      </div>
+      <ul>
+        <li>Lead four developers whose parallel AI coding agents (Claude Code, Codex) build one product, coordinated through a harness repository with typed contracts, scoped tasks, plan-before-code gates and a Jira-synced board of 21 work items.</li>
+        <li>Built the Node.js harness CLI that scopes each agent to its acceptance criteria and allowed paths and runs only affected tests.</li>
+      </ul>
+    </div>
+
+    <h2>Research Training</h2>
+    <ul class="plain">
+      <li><b>Harvard CS197, AI Research Experiences</b> (Prof. Pranav Rajpurkar), Jun – Jul 2026: PyTorch, Lightning ViT fine-tuning, W&amp;B and Hydra sweeps, AWS EC2 GPU training, DreamBooth Stable Diffusion, and statistical model comparison (McNemar, paired t-test, bootstrap, non-inferiority, confidence intervals).</li>
+      <li><b>Stanford CS197, Computer Science Research</b>, Jun – Jul 2026: bit flips, research velocity, evaluation design, related-work synthesis and paper writing.</li>
+      <li><b>Stanford CS229, Machine Learning</b> and <b>CS230, Deep Learning</b> (Andrew Ng, Kian Katanforoosh), with the five-course Deep Learning Specialization.</li>
+      <li><b>UC Berkeley Agentic AI MOOC</b> (selected lectures) and <b>Agentic AI Engineering workshop</b> (Jon Krohn, Ed Donner), Jul 2026: verifiable agents, graders, benchmark noise, OpenAI Agents SDK, CrewAI, MCP.</li>
+      <li><b>Generative and Agentic AI Bootcamp</b>, RHU, 2026 (Dr. Roaa Soloh, 20 hours) and <b>ZAKA × Hariri Foundation AI Bootcamp</b>, 2025 (30 hours).</li>
+    </ul>
+
+    <h2>Technical Skills</h2>
+    <dl class="skills">
+      <dt>ML / AI</dt>
+      <dd>Deep learning, computer vision, diffusion models, multimodal AI, PEFT / LoRA, NLP fundamentals, agentic AI, model evaluation, statistical model comparison</dd>
+      <dt>Frameworks</dt>
+      <dd>PyTorch, PyTorch Lightning, Hugging Face Transformers / PEFT, TensorFlow / Keras, scikit-learn, OpenCV, NumPy, pandas, Matplotlib</dd>
+      <dt>Research tools</dt>
+      <dd>Weights &amp; Biases, Hydra, Google Colab, AWS EC2, Conda, Git, LangGraph, CrewAI, MCP</dd>
+      <dt>Languages</dt>
+      <dd>Python, TypeScript, JavaScript, C#, C++, SQL</dd>
+    </dl>
+
+    <h2>Achievements</h2>
+    <ul class="plain">
+      <li>Lebanese Collegiate Programming Contest (LCPC 2026), American University of Beirut, Oct 2026.</li>
+      <li>Microsoft Office Specialist: 2nd place nationally in Word 2016 (2019) and PowerPoint 2016 (2020).</li>
+    </ul>
+  </body>
+</html>

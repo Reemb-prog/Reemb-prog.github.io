@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { m as motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import { Code2, Download, FlaskConical, Mail, Copy, Menu, X } from 'lucide-react';
+import { ChevronDown, Code2, Download, FlaskConical, Mail, Copy, Menu, X } from 'lucide-react';
 import { Github, Linkedin } from './BrandIcons';
 import { about, learning, next, now, profile, questions, recognition, skills, type Lens } from '../data/content';
 import { credits } from '../data/credits';
@@ -9,6 +9,59 @@ import { asset, img } from '../lib';
 import { replayIntro } from './Intro';
 
 /* ---------------- Header ---------------- */
+/** Both CVs, with the current lens's one first. */
+const cvsFor = (lens: Lens) => [...profile.cvs].sort((a, b) => Number(b.lens === lens) - Number(a.lens === lens));
+
+function CvMenu({ lens }: { lens: Lens }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        ref.current?.querySelector('button')?.focus();
+      }
+    };
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+  return (
+    <div className="cv-menu" ref={ref}>
+      <button
+        className="btn small"
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls="cv-menu-list"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <Download aria-hidden="true" />
+        <span className="header-cv-label">CV</span>
+        <ChevronDown aria-hidden="true" className="cv-chev" />
+      </button>
+      {open && (
+        <ul id="cv-menu-list" className="cv-list">
+          {cvsFor(lens).map((c) => (
+            <li key={c.lens}>
+              <a href={asset(profile.cv[c.lens])} download onClick={() => setOpen(false)}>
+                <span>{c.label}</span>
+                <span className="cv-note">PDF · {c.note}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 const sections: [string, string][] = [
   ['work', 'Work'],
   ['about', 'About'],
@@ -68,10 +121,7 @@ export function Header({ lens, onLens }: { lens: Lens; onLens: (l: Lens) => void
               Research
             </button>
           </div>
-          <a className="btn small" href={asset(profile.cv[lens])} download aria-label="Download CV (PDF)">
-            <Download aria-hidden="true" />
-            <span className="header-cv-label">CV</span>
-          </a>
+          <CvMenu lens={lens} />
           <button
             className="menu-btn"
             aria-expanded={open}
@@ -91,9 +141,11 @@ export function Header({ lens, onLens }: { lens: Lens; onLens: (l: Lens) => void
                 {label}
               </a>
             ))}
-            <a className="mobile-cv" href={asset(profile.cv[lens])} download onClick={() => setOpen(false)}>
-              <Download aria-hidden="true" /> Download CV (PDF)
-            </a>
+            {cvsFor(lens).map((c) => (
+              <a key={c.lens} className="mobile-cv" href={asset(profile.cv[c.lens])} download onClick={() => setOpen(false)}>
+                <Download aria-hidden="true" /> {c.label} <span className="cv-note">PDF · {c.note}</span>
+              </a>
+            ))}
           </div>
         </nav>
       )}
@@ -504,7 +556,7 @@ export function Close({ lens }: { lens: Lens }) {
         </div>
         <div className="close-links">
           <a className="btn" href={asset(profile.cv[lens])} download>
-            <Download aria-hidden="true" /> Download CV (PDF)
+            <Download aria-hidden="true" /> {lens === 'build' ? 'Software engineer CV' : 'Research CV'} (PDF)
           </a>
           <a className="btn ghost" href={`mailto:${profile.email}`}>
             <Mail aria-hidden="true" /> Email

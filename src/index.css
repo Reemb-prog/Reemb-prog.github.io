@@ -315,6 +315,54 @@ p {
   background: var(--mark);
 }
 
+.cv-menu {
+  position: relative;
+}
+.cv-menu .btn svg.cv-chev {
+  width: 14px;
+  height: 14px;
+  margin-left: -2px;
+  transition: transform 200ms var(--ease-out);
+}
+.cv-menu .btn[aria-expanded='true'] svg.cv-chev {
+  transform: rotate(180deg);
+}
+.cv-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 230px;
+  list-style: none;
+  padding: 6px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--ground-2);
+  box-shadow: var(--shadow);
+}
+.cv-list a {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.cv-list a:hover,
+.cv-list a:focus-visible {
+  background: color-mix(in oklab, var(--mark) 12%, transparent);
+}
+.cv-note {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.mobile-menu .cv-note {
+  margin-left: auto;
+}
+
 .menu-btn {
   display: none;
   place-items: center;
@@ -351,9 +399,11 @@ p {
   border-bottom: 1px solid var(--rule);
 }
 .mobile-menu a.mobile-cv {
-  margin-top: 6px;
   border-bottom: 0;
   color: var(--mark);
+}
+.mobile-menu a.mobile-cv:first-of-type {
+  margin-top: 6px;
 }
 .mobile-menu svg {
   width: 18px;
@@ -1828,7 +1878,7 @@ html.intro body {
     border: 0;
     width: auto !important;
   }
-  .header-actions > .btn {
+  .header-actions > .cv-menu {
     display: none;
   }
   .brand {
