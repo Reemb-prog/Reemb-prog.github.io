@@ -349,6 +349,16 @@ export const now = {
   stack: ['TypeScript', 'Next.js 15', 'React 19', 'Tailwind CSS v4', 'Zod', 'Vitest', 'Playwright', 'Supabase', 'Vercel'],
 };
 
+/** A hint at the research I want to pursue next (from my notes on creativity in diffusion). */
+export const next = {
+  label: 'p.s. the question I want to chase next',
+  q: 'Where along a diffusion model’s path from noise to image is there still room to be creative?',
+  body: [
+    'I suspect there’s a window mid-denoising where the image already has structure but could still become many different, valid things. I want to find it by measurement, then bound how far a model may wander inside it. I’d love to pursue this with a mentor.',
+    'In my senior year I take a graphic design course surrounded by designers, and watching them work is teaching me what creativity and design really are. I hope that helps me build a diffusion model that is truly creative, not just random.',
+  ],
+};
+
 export const questions: { q: string; target: string }[] = [
   { q: 'Does a diffusion model still need its guide at step 29?', target: 'controlnet' },
   { q: 'Can four AI agents build one product without stepping on each other?', target: 'now' },

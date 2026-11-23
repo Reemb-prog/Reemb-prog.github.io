@@ -1,16 +1,37 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { m as motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
-import { Code2, Download, FlaskConical, Mail, Copy } from 'lucide-react';
+import { Code2, Download, FlaskConical, Mail, Copy, Menu, X } from 'lucide-react';
 import { Github, Linkedin } from './BrandIcons';
-import { about, learning, now, profile, questions, recognition, skills, type Lens } from '../data/content';
+import { about, learning, next, now, profile, questions, recognition, skills, type Lens } from '../data/content';
 import { credits } from '../data/credits';
 import { ArrowMark, CircleMark, UnderlineMark } from './Marks';
 import { asset, img } from '../lib';
 import { replayIntro } from './Intro';
 
 /* ---------------- Header ---------------- */
+const sections: [string, string][] = [
+  ['work', 'Work'],
+  ['about', 'About'],
+  ['now', 'Now'],
+  ['questions', 'Questions'],
+  ['learning', 'Learning'],
+  ['contact', 'Contact'],
+];
+
 export function Header({ lens, onLens }: { lens: Lens; onLens: (l: Lens) => void }) {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    const onResize = () => window.innerWidth > 980 && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [open]);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 24);
     on();
@@ -18,18 +39,17 @@ export function Header({ lens, onLens }: { lens: Lens; onLens: (l: Lens) => void
     return () => window.removeEventListener('scroll', on);
   }, []);
   return (
-    <header className={`header${scrolled ? ' scrolled' : ''}`}>
+    <header className={`header${scrolled || open ? ' scrolled' : ''}`}>
       <div className="wrap header-inner">
         <a className="brand" href="#top">
           Reem Basho
         </a>
         <nav className="nav" aria-label="Sections">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
-          <a href="#now">Now</a>
-          <a href="#questions">Questions</a>
-          <a href="#learning">Learning</a>
-          <a href="#contact">Contact</a>
+          {sections.map(([id, label]) => (
+            <a key={id} href={`#${id}`}>
+              {label}
+            </a>
+          ))}
         </nav>
         <div className="header-actions">
           <div className="mini-lens" role="group" aria-label="Lens">
@@ -52,8 +72,31 @@ export function Header({ lens, onLens }: { lens: Lens; onLens: (l: Lens) => void
             <Download aria-hidden="true" />
             <span className="header-cv-label">CV</span>
           </a>
+          <button
+            className="menu-btn"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            onClick={() => setOpen((o) => !o)}
+          >
+            {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+          </button>
         </div>
       </div>
+      {open && (
+        <nav id="mobile-menu" className="mobile-menu" aria-label="Sections">
+          <div className="wrap">
+            {sections.map(([id, label]) => (
+              <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>
+                {label}
+              </a>
+            ))}
+            <a className="mobile-cv" href={asset(profile.cv[lens])} download onClick={() => setOpen(false)}>
+              <Download aria-hidden="true" /> Download CV (PDF)
+            </a>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }
@@ -473,6 +516,15 @@ export function Close({ lens }: { lens: Lens }) {
             <Linkedin aria-hidden="true" /> LinkedIn
           </a>
         </div>
+        {lens === 'research' && (
+          <aside className="next-note" aria-labelledby="next-q" data-reveal="write" style={{ '--i': 4 } as React.CSSProperties}>
+            <p className="next-label hand">{next.label}</p>
+            <p id="next-q" className="next-q">{next.q}</p>
+            {next.body.map((t) => (
+              <p key={t} className="next-body">{t}</p>
+            ))}
+          </aside>
+        )}
       </div>
     </section>
   );
